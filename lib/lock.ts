@@ -13,7 +13,7 @@ export interface MasterId extends BaseMasterId {
     did: string;
 }
 export interface MasterIdWrapped extends BaseMasterIdWrapped {
-    value: MasterId;
+    value: MasterId | null;
 }
 export class Lock extends BaseLock {
     public constructor(

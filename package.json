@@ -12,7 +12,7 @@
   ],
   "dependencies": {
     "@dizmo/functions-agent": "^1.0.0",
-    "@dizmo/functions-lock": "^1.0.3",
+    "@dizmo/functions-lock": "^1.0.5",
     "@dizmo/functions-random": "^2.0.6"
   },
   "description": "simple locking",
