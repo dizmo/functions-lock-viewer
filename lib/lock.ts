@@ -1,3 +1,5 @@
+import { MasterIdWrapped as BaseMasterIdWrapped } from '@dizmo/functions-lock';
+import { MasterId as BaseMasterId } from '@dizmo/functions-lock';
 import { Lock as BaseLock } from '@dizmo/functions-lock';
 import { random } from '@dizmo/functions-random';
 import { agent } from '@dizmo/functions-agent';
@@ -7,11 +9,11 @@ declare const dizmo: Dizmo;
 import { Viewer } from './types';
 declare const viewer: Viewer;
 
-interface MasterId {
-    now: string; eid: string; sid: string | null; did: string;
+export interface MasterId extends BaseMasterId {
+    did: string;
 }
-interface MasterIdWrapped {
-    value: MasterId; nonce: string;
+export interface MasterIdWrapped extends BaseMasterIdWrapped {
+    value: MasterId;
 }
 export class Lock extends BaseLock {
     public constructor(
