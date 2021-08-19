@@ -31,7 +31,7 @@ import { Lock } from '@dizmo/functions-lock-viewer';
 ### Example
 
 ```typescript
-const lock = new Lock();
+const lock = new Lock('my-lock');
 // request exclusive lock
 if (await lock.acquire()) {
     // ensure it's not spurious
