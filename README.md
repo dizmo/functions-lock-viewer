@@ -28,13 +28,35 @@ npm install @dizmo/functions-lock-viewer --save
 import { Lock } from '@dizmo/functions-lock-viewer';
 ```
 
-### Example(s)
+### Example
+
+```typescript
+const lock = new Lock();
+// request exclusive lock
+if (await lock.acquire()) {
+    // ensure it's not spurious
+    if (await lock.acquire()) {
+        // do something & then release it
+        if (await lock.release()) {
+            console.debug('lock acquired and released');
+        } else {
+            console.debug('lock acquired but *not* released');
+        }
+    } else {
+        console.debug('lock *not* acquired');
+    }
+} else {
+    console.debug('lock *not* acquired');
+}
+```
+
+### Further Example(s)
 
 #### Acquire and release lock
 ```typescript
 const lock = new Lock();
-if (lock.acquire()) {
-    if (lock.release()) {
+if (await lock.acquire()) {
+    if (await lock.release()) {
         console.debug('lock acquired and released');
     } else {
         console.debug('lock acquired but *not* released');
@@ -47,8 +69,8 @@ if (lock.acquire()) {
 #### Acquire and release lock at index=0 (default) with no expiration (default)
 ```typescript
 const lock = new Lock();
-if (lock.acquire(0)) {
-    if (lock.release(0)) {
+if (await lock.acquire(0)) {
+    if (await lock.release(0)) {
         console.debug('lock acquired @index=0 and released');
     } else {
         console.debug('lock acquired @index=0 but *not* released');
@@ -61,8 +83,8 @@ if (lock.acquire(0)) {
 #### Acquire and release lock at index=0 (default) with an expiration of one minute
 ```typescript
 const lock = new Lock(), expiry_ms = 60 * 1000; // one minute
-if (lock.acquire(0, expiry_ms)) {
-    if (lock.release(0)) {
+if (await lock.acquire(0, expiry_ms)) {
+    if (await lock.release(0)) {
         console.debug('lock acquired and released');
     } else {
         console.debug('lock acquired but *not* released');
@@ -75,8 +97,8 @@ if (lock.acquire(0, expiry_ms)) {
 #### Acquire and release named lock at index=1
 ```typescript
 const lock = new Lock('my-lock');
-if (lock.acquire(1)) {
-    if (lock.release(1)) {
+if (await lock.acquire(1)) {
+    if (await lock.release(1)) {
         console.debug('named lock @index=1 acquired and released');
     } else {
         console.debug('named lock @index=1 acquired but *not* released');
@@ -89,9 +111,9 @@ if (lock.acquire(1)) {
 #### Acquire (twice) and release named lock at index=2
 ```typescript
 const lock = new Lock('my-lock');
-if (lock.acquire(2)) {
-    if (lock.acquire(2)) {
-        if (lock.release(2)) {
+if (await lock.acquire(2)) {
+    if (await lock.acquire(2)) {
+        if (await lock.release(2)) {
             console.debug('named lock @index=2 acquired and released');
         } else {
             console.debug('named lock @index=2 acquired but *not* released');
@@ -107,9 +129,9 @@ if (lock.acquire(2)) {
 #### Acquire (twice) and release named lock at index=2 with ID clearing
 ```typescript
 const lock = new Lock('my-lock', true); // clear ID i.e. "fake" another context!
-if (lock.acquire(2)) {
-    if (lock.acquire(2)) {
-        if (lock.release(2)) {
+if (await lock.acquire(2)) {
+    if (await lock.acquire(2)) {
+        if (await lock.release(2)) {
             console.debug('named lock @index=2 acquired and released');
         } else {
             console.debug('named lock @index=2 acquired but *not* released');
