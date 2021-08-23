@@ -9,17 +9,50 @@ declare const dizmo: Dizmo;
 import { Viewer } from './types';
 declare const viewer: Viewer;
 
-export interface MasterId extends BaseMasterId {
+/**
+ * Composite structure to manage identities
+ */
+ export interface MasterId extends BaseMasterId {
+    /** dizmo identifier */
     did: string;
 }
 export interface MasterIdWrapped extends BaseMasterIdWrapped {
+    /** master identifier */
     value: MasterId | null;
 }
-export class Lock extends BaseLock {
-    public constructor(
+/**
+ * Class to acquire and release locks: Each instance manages a separate lock,
+ * unless they have the same (optional) `name`. Also, an (optional) `clear` flag
+ * can be used to clear an existing lock (by having its corresponding internal
+ * identity discarded).
+ *
+ * A minimal example:
+ * @example
+ *  ```
+ *  const lock = new Lock('my-lock');
+ *  // request exclusive lock
+ *  if (await lock.acquire()) {
+ *      // ensure it's not spurious
+ *      if (await lock.acquire()) {
+ *          // do something & then release it
+ *          await lock.release();
+ *      }
+ *  }
+ *  ```
+ */
+ export class Lock extends BaseLock {
+    /**
+     * Instantiates a new lock object to acquire and release locks.
+     *
+     * @param name
+     *  optional name to access the same lock across multiple instances
+     * @param clear
+     *  optional flag to suspend an (existing) identity
+     */
+     public constructor(
         path?: string | null, clear?: boolean
     ) {
-        super(path, clear); // storage is undefined
+        super(path, clear); // use default storage
     }
     protected setMasterId(
         index: number, value: MasterId | null
