@@ -36,17 +36,9 @@ const lock = new Lock('my-lock');
 if (await lock.acquire()) {
     // ensure it's not spurious
     if (await lock.acquire()) {
-        // do something & then release it
-        if (await lock.release()) {
-            console.debug('lock acquired and released');
-        } else {
-            console.debug('lock acquired but *not* released');
-        }
-    } else {
-        console.debug('lock *not* acquired');
+        // do something & release it
+        await lock.release();
     }
-} else {
-    console.debug('lock *not* acquired');
 }
 ```
 
